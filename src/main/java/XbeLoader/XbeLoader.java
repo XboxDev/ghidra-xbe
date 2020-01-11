@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,34 +20,41 @@ import java.util.*;
 
 import ghidra.app.util.Option;
 import ghidra.app.util.bin.ByteProvider;
+import ghidra.app.util.bin.BinaryReader;
 import ghidra.app.util.importer.MessageLog;
 import ghidra.app.util.opinion.AbstractLibrarySupportLoader;
 import ghidra.app.util.opinion.LoadSpec;
 import ghidra.framework.model.DomainObject;
 import ghidra.program.model.listing.Program;
+import ghidra.program.model.lang.LanguageCompilerSpecPair;
 import ghidra.util.exception.CancelledException;
 import ghidra.util.task.TaskMonitor;
 
 /**
  * TODO: Provide class-level documentation that describes what this loader does.
  */
-public class SkeletonLoader extends AbstractLibrarySupportLoader {
+public class XbeLoader extends AbstractLibrarySupportLoader {
 
 	@Override
 	public String getName() {
 
-		// TODO: Name the loader.  This name must match the name of the loader in the .opinion 
+		// TODO: Name the loader.  This name must match the name of the loader in the .opinion
 		// files.
 
-		return "My loader";
+		return "Xbox Executable Format (XBE)";
 	}
 
 	@Override
 	public Collection<LoadSpec> findSupportedLoadSpecs(ByteProvider provider) throws IOException {
 		List<LoadSpec> loadSpecs = new ArrayList<>();
 
-		// TODO: Examine the bytes in 'provider' to determine if this loader can load it.  If it 
+		// Examine the bytes in 'provider' to determine if this loader can load it.  If it
 		// can load it, return the appropriate load specifications.
+		BinaryReader reader = new BinaryReader(provider, true);
+		if (reader.readNextAsciiString(4).equals("XBEH")) {
+			loadSpecs.add(new LoadSpec(this, 0,
+				new LanguageCompilerSpecPair("x86:LE:32:default", "windows"), true));
+		}
 
 		return loadSpecs;
 	}
