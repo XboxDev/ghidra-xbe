@@ -33,6 +33,13 @@ public class XbeSectionHeader {
 	public long tailSharedPageRefCountAddr;
 	public byte[] digest;
 
+	public final static long FLAG_WRITABLE            = 0x00000001L;
+	public final static long FLAG_PRELOAD             = 0x00000002L;
+	public final static long FLAG_EXECUTABLE          = 0x00000004L;
+	public final static long FLAG_INSERTED_FILE       = 0x00000008L;
+	public final static long FLAG_HEAD_PAGE_READ_ONLY = 0x00000010L;
+	public final static long FLAG_TAIL_PAGE_READ_ONLY = 0x00000020L;
+
 	public XbeSectionHeader(BinaryReader reader) throws IOException {
 		flags = reader.readNextUnsignedInt();
 		virtualAddr = reader.readNextUnsignedInt();
