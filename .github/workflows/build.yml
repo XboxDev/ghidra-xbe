@@ -1,0 +1,16 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Tree
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Build
+      run: |
+        ./build.sh
