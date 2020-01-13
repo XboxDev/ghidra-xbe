@@ -1,0 +1,9 @@
+triangle.xbe
+============
+This XBE demonstrates basic rendering of 3D graphics by drawing a triangle on
+the screen, and originates from sample code from the nxdk project, the
+open-source Xbox toolchain.
+
+Repository: https://github.com/XboxDev/nxdk
+Commit:     f998bdca9e7a7d2360ab3d464c91ff45745b111a
+Location:   samples/triangle

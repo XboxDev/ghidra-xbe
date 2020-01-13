@@ -13,4 +13,4 @@ jobs:
 
     - name: Build
       run: |
-        ./build.sh
+        RUNTESTS=1 ./build.sh

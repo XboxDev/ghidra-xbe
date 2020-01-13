@@ -28,4 +28,22 @@ popd
 echo "[*] Building..."
 gradle
 
+if [[ "$RUNTESTS" == "1" ]]; then
+	echo "[*] Installing Extension..."
+	cp ./dist/*ghidra-xbe.zip $GHIDRA_INSTALL_DIR/Ghidra/Extensions
+	pushd $GHIDRA_INSTALL_DIR/Ghidra/Extensions
+	unzip *ghidra-xbe.zip
+	popd
+
+	echo "[*] Running Tests..."
+	pushd tests
+	$GHIDRA_INSTALL_DIR/support/analyzeHeadless . test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
+	if [[ -e TEST_PASS ]]; then
+		echo "[+] Test Passed"
+	else
+		echo "[-] Test Failed!"
+		exit 1
+	fi
+fi
+
 echo "[*] Done!"
