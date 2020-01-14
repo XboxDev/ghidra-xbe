@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   Ubuntu:
     runs-on: ubuntu-latest
+    env:
+      BUILD_TAG:
+      PKG_NAME:
     steps:
     - name: Clone Tree
       uses: actions/checkout@v1
@@ -13,4 +16,37 @@ jobs:
 
     - name: Build
       run: |
+        export BUILD_TAG=build-$(date -u +'%Y%m%d%H%M')
+        echo "::set-env name=BUILD_TAG::$BUILD_TAG"
         RUNTESTS=1 ./build.sh
+        echo "::set-env name=PKG_NAME::$(ls dist)"
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ env.PKG_NAME }}
+        path: dist/${{ env.PKG_NAME }}
+
+    - name: Create Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.BUILD_TAG }}
+        release_name: ${{ env.BUILD_TAG }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Assets
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_name: ${{ env.PKG_NAME }}
+        asset_path: dist/${{ env.PKG_NAME }}
+        asset_content_type: application/zip
