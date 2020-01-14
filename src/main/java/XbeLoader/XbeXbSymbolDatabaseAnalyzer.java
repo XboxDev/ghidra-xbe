@@ -34,6 +34,7 @@ import ghidra.program.flatapi.FlatProgramAPI;
 import ghidra.program.model.address.AddressSetView;
 import ghidra.program.model.listing.Program;
 import ghidra.program.model.symbol.SourceType;
+import ghidra.program.model.symbol.Namespace;
 import ghidra.util.exception.CancelledException;
 import ghidra.util.task.TaskMonitor;
 import utility.application.ApplicationLayout;
@@ -91,8 +92,11 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 			while ((line = output.readLine()) != null) {
 				String[] params = line.split("=");
 				Address address = api.toAddr(Long.decode(params[1].strip()));
-				String name = params[0].strip();
-				program.getSymbolTable().createLabel(address, name, SourceType.ANALYSIS);
+				String fullName = params[0].strip();
+				int libNameLength = fullName.indexOf("__");
+				String lib = fullName.substring(0, libNameLength);
+				String name = fullName.substring(libNameLength+2);
+				program.getSymbolTable().createLabel(address, name, getNamespace(program, lib), SourceType.ANALYSIS);
 			}
 		} catch (InterruptedException e) {
 			log.appendMsg("Failed to run XbSymbolDatabaseTool");
@@ -106,5 +110,18 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 		}
 
 		return true;
+	}
+
+	private Namespace getNamespace(Program program, String namespace) {
+		Namespace space = program.getSymbolTable().getNamespace(namespace, null);
+		if (space != null) {
+			return space;
+		}
+		try {
+			return program.getSymbolTable().createNameSpace(null, namespace, SourceType.IMPORTED);
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 }
