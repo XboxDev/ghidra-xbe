@@ -34,6 +34,7 @@ import ghidra.program.database.function.OverlappingFunctionException;
  * TODO: Provide class-level documentation that describes what this loader does.
  */
 public class XbeLoader extends AbstractLibrarySupportLoader {
+	public static String XBE_NAME = "Xbox Executable Format (XBE)";
 	public XbeImageHeader header;
 	List<XbeSectionHeader> sectionHeaders;
 	boolean isDebug;
@@ -428,7 +429,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		// TODO: Name the loader. This name must match the name of the loader in the .opinion
 		// files.
 
-		return "Xbox Executable Format (XBE)";
+		return XBE_NAME;
 	}
 
 	@Override

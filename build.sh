@@ -6,6 +6,7 @@ cat <<EOF > urls.txt
 https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz
 https://services.gradle.org/distributions/gradle-5.0-bin.zip
 https://ghidra-sre.org/ghidra_9.1.1_PUBLIC_20191218.zip
+https://github.com/mborgerson/XbSymbolDatabase/releases/download/cli-tool-0.1/XbSymbolDatabaseTool.zip
 EOF
 cat urls.txt | xargs -n 1 -P 10 wget --no-verbose
 
@@ -23,10 +24,22 @@ echo "[*] Extracting Ghidra..."
 unzip -q ghidra_9.1.1_PUBLIC_20191218.zip
 export GHIDRA_INSTALL_DIR=$PWD/ghidra_9.1.1_PUBLIC
 
-popd
+echo "[*] Extracting XbSymbolDatabase..."
+unzip -q XbSymbolDatabaseTool.zip
+export XBSYMBOLDATABASE=$PWD/XbSymbolDatabaseTool
+
+popd # Back to source root
+
+# Copy XbSymbolDatabase into this source tree for redist
+cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.linux64.Release   os/linux64/XbSymbolDatabase
+cp $XBSYMBOLDATABASE/LICENSE                                os/linux64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.macos64.Release   os/osx64/XbSymbolDatabase
+cp $XBSYMBOLDATABASE/LICENSE                                os/osx64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.win64.Release.exe os/win64/XbSymbolDatabase
+cp $XBSYMBOLDATABASE/LICENSE                                os/win64/XbSymbolDatabaseTool.LICENSE
 
 echo "[*] Building..."
-gradle
+gradle -b build.gradle
 
 if [[ "$RUNTESTS" == "1" ]]; then
 	echo "[*] Installing Extension..."
@@ -35,13 +48,13 @@ if [[ "$RUNTESTS" == "1" ]]; then
 	unzip *ghidra-xbe.zip
 	popd
 
-	echo "[*] Running Tests..."
+	echo "[*] Running tests..."
 	pushd tests
 	$GHIDRA_INSTALL_DIR/support/analyzeHeadless . test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
 	if [[ -e TEST_PASS ]]; then
-		echo "[+] Test Passed"
+		echo "[+] Test PASSED"
 	else
-		echo "[-] Test Failed!"
+		echo "[-] Test FAILED"
 		exit 1
 	fi
 fi
