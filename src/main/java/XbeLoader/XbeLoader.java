@@ -28,6 +28,8 @@ import ghidra.util.task.TaskMonitor;
 import ghidra.program.flatapi.*;
 import ghidra.util.Msg;
 import ghidra.program.database.function.OverlappingFunctionException;
+import ghidra.program.model.util.CodeUnitInsertionException;
+import ghidra.program.model.data.PointerDataType;
 
 
 /**
@@ -579,14 +581,18 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 
 				try {
 					String importName = kernelExports[(int)(importAddr & ~0x80000000L)];
+					symbolTable.createLabel(address, importName, SourceType.IMPORTED);
+					listing.createData(address, new PointerDataType(), 4);
 					refManager.addExternalReference(address, "xboxkrnl.exe",
 						importName, extAddr, SourceType.IMPORTED, 0, RefType.DATA);
-					symbolTable.createLabel(address, importName, SourceType.IMPORTED);
 				}
 				catch (DuplicateNameException e) {
 					log.appendMsg("External location not created: " + e.getMessage());
 				}
 				catch (InvalidInputException e) {
+					log.appendMsg("External location not created: " + e.getMessage());
+				}
+				catch (CodeUnitInsertionException e) {
 					log.appendMsg("External location not created: " + e.getMessage());
 				}
 			}
