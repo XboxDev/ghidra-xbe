@@ -1,4 +1,4 @@
-ghidra-xbe ![CI Status](https://github.com/mborgerson/ghidra-xbe/workflows/Build/badge.svg?branch=master)
+ghidra-xbe ![CI Status](https://github.com/mborgerson/ghidra-xbe/workflows/Build/badge.svg?branch=master) [![Download](https://img.shields.io/badge/-Download-blue)](https://github.com/mborgerson/ghidra-xbe/releases/latest)
 ==========
 This is an extension for the [Ghidra SRE framework](https://ghidra-sre.org/) to support loading Xbox Executable Format (XBE) files, the format used for the [original Xbox game console](https://en.wikipedia.org/wiki/Xbox_(console)). Library symbol recovery is supported through integrated pattern matching against the [XbSymbolDatabase](https://github.com/Cxbx-Reloaded/XbSymbolDatabase).
 
