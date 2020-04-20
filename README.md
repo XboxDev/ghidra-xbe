@@ -4,7 +4,7 @@ This is an extension for the [Ghidra SRE framework](https://ghidra-sre.org/) to 
 
 Download
 --------
-The latest release of this extension can be [found on the releases page](https://github.com/mborgerson/ghidra-xbe/releases/latest). Download the latest `ghidra_9.1.1_PUBLIC_XXXXXXXX_ghidra-xbe.zip` package. See below for how to install.
+The latest release of this extension can be [found on the releases page](https://github.com/mborgerson/ghidra-xbe/releases/latest). Download the latest `ghidra_9.1.2_PUBLIC_XXXXXXXX_ghidra-xbe.zip` package. See below for how to install.
 
 How to Build
 ------------
@@ -12,4 +12,4 @@ To build this extension from source on Ubuntu, clone the repository and run the 
 
 How to Install
 --------------
-Copy the extension package `ghidra_9.1.1_PUBLIC_XXXXXXXX_ghidra-xbe.zip` to your Ghidra installation directory `<path to Ghidra root>/Extensions/Ghidra`. When starting Ghidra, in the main window navigate to <kbd>File</kbd>&rarr;<kbd>Install Extensions...</kbd>, and select **XboxExecutableLoader**. You can now import and analyze XBE files!
+Copy the extension package `ghidra_9.1.2_PUBLIC_XXXXXXXX_ghidra-xbe.zip` to your Ghidra installation directory `<path to Ghidra root>/Extensions/Ghidra`. When starting Ghidra, in the main window navigate to <kbd>File</kbd>&rarr;<kbd>Install Extensions...</kbd>, and select **XboxExecutableLoader**. You can now import and analyze XBE files!
