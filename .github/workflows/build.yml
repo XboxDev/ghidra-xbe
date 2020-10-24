@@ -40,7 +40,7 @@ jobs:
         with:
           java-version: "11.0.x"
           java-package: jdk
-          architecture: x86
+          architecture: x64
 
       - name: Install Ghidra
         run: |
@@ -70,7 +70,7 @@ jobs:
         with:
           java-version: "11.0.x"
           java-package: jdk
-          architecture: x86
+          architecture: x64
 
       - name: Install Ghidra
         run: |
