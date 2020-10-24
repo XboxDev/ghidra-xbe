@@ -35,7 +35,7 @@ cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.linux64.Release   os/linux64/XbSymbolD
 cp $XBSYMBOLDATABASE/LICENSE                                os/linux64/XbSymbolDatabaseTool.LICENSE
 cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.macos64.Release   os/osx64/XbSymbolDatabaseTool
 cp $XBSYMBOLDATABASE/LICENSE                                os/osx64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.win64.Release.exe os/win64/XbSymbolDatabaseTool
+cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.win64.Release.exe os/win64/XbSymbolDatabaseTool.exe
 cp $XBSYMBOLDATABASE/LICENSE                                os/win64/XbSymbolDatabaseTool.LICENSE
 
 echo "[*] Building..."

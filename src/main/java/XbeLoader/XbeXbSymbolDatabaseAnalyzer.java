@@ -29,6 +29,8 @@ import ghidra.app.services.AbstractAnalyzer;
 import ghidra.app.services.AnalyzerType;
 import ghidra.app.util.importer.MessageLog;
 import ghidra.framework.Application;
+import ghidra.framework.Platform;
+import ghidra.framework.OperatingSystem;
 import ghidra.framework.options.Options;
 import ghidra.program.flatapi.FlatProgramAPI;
 import ghidra.program.model.address.AddressSetView;
@@ -46,6 +48,9 @@ import ghidra.util.exception.*;
  * TODO: Provide class-level documentation that describes what this analyzer does.
  */
 public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
+	
+	private static final String xbsdb_tool_exec = "XbSymbolDatabaseTool";
+	private static final String xbsdb_tool_exec_wins = "XbSymbolDatabaseTool.exe";
 
 	public XbeXbSymbolDatabaseAnalyzer() {
 		super("Xbox Symbol Database Analyzer", "Scan XBE for known library functions", AnalyzerType.BYTE_ANALYZER);
@@ -71,11 +76,19 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 	public boolean added(Program program, AddressSetView set, TaskMonitor monitor, MessageLog log)
 			throws CancelledException {
 		FlatProgramAPI api = new FlatProgramAPI(program, monitor);
+		
+		String toolExec;
+		if (Platform.CURRENT_PLATFORM.getOperatingSystem() == OperatingSystem.WINDOWS) {
+			toolExec = xbsdb_tool_exec_wins;
+		} else {
+			toolExec = xbsdb_tool_exec;
+		}
+		
 		String toolPath;
 		try {
-			toolPath = Application.getOSFile("XbSymbolDatabaseTool").getAbsolutePath();
+			toolPath = Application.getOSFile(toolExec).getAbsolutePath();
 		} catch (FileNotFoundException e) {
-			log.appendMsg("Failed to find XbSymbolDatabase");
+			log.appendMsg("Failed to find " + toolExec);
 			return false;
 		}
 		String xbePath = program.getExecutablePath();
@@ -99,13 +112,13 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 				program.getSymbolTable().createLabel(address, name, getNamespace(program, lib), SourceType.ANALYSIS);
 			}
 		} catch (InterruptedException e) {
-			log.appendMsg("Failed to run XbSymbolDatabaseTool");
+			log.appendMsg("Failed to run " + toolExec);
 			return false;
 		} catch (IOException e) {
-			log.appendMsg("Failed to run XbSymbolDatabaseTool");
+			log.appendMsg("Failed to run " + toolExec);
 			return false;
 		} catch (InvalidInputException e) {
-			log.appendMsg("Failed to run XbSymbolDatabaseTool");
+			log.appendMsg("Failed to run " + toolExec);
 			return false;
 		}
 
