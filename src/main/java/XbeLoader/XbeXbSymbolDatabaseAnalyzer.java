@@ -92,6 +92,14 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 			return false;
 		}
 		String xbePath = program.getExecutablePath();
+		// HACK: Somehow GUI broke this yet headlessAnalyzer didn't...
+		// Ensure path does not erroneously begin with `/` before drive letter cause by Ghidra's end.
+		if (Platform.CURRENT_PLATFORM.getOperatingSystem() == OperatingSystem.WINDOWS) {
+			if (xbePath.charAt(0) == '/' && xbePath.charAt(1) != '/') {
+				xbePath = xbePath.substring(1).replace("/", "\\");
+			}
+		}
+		
 		List<String> cmd = new ArrayList<>();
 		cmd.add(toolPath);
 		cmd.add(xbePath);
