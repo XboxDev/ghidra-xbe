@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: |
           export BUILD_TAG=build-$(date -u +'%Y%m%d%H%M')
-          echo "::set-env name=BUILD_TAG::$BUILD_TAG"
+          echo "BUILD_TAG=$BUILD_TAG" >> $GITHUB_ENV
           mkdir -p dist
           echo -n $BUILD_TAG > dist/tag
           RUNTESTS=1 ./build.sh
@@ -101,8 +101,8 @@ jobs:
 
       - name: Get Package Info
         run: |
-          echo "::set-env name=BUILD_TAG::$(cat dist/tag)"
-          echo "::set-env name=PKG_NAME::$(cd dist; ls *ghidra-xbe.zip)"
+          echo "BUILD_TAG=$(cat dist/tag)" >> $GITHUB_ENV
+          echo "PKG_NAME=$(cd dist; ls *ghidra-xbe.zip)" >> $GITHUB_ENV
 
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
