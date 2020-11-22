@@ -44,18 +44,18 @@ jobs:
 
       - name: Install Ghidra
         run: |
-          Invoke-WebRequest -Uri "https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip" -OutFile "ghidra.zip"
+          Invoke-WebRequest -Uri "https://ghidra-sre.org/ghidra_9.2_PUBLIC_20201113.zip" -OutFile "ghidra.zip"
           Expand-Archive -path ghidra.zip -destinationpath .
 
       - name: Install Extension
         run: |
-          Expand-Archive -path dist\*ghidra-xbe.zip -destinationpath ghidra_9.1.2_PUBLIC\Ghidra\Extensions
+          Expand-Archive -path dist\*ghidra-xbe.zip -destinationpath ghidra_9.2_PUBLIC\Ghidra\Extensions
 
       - name: Run Tests
         run: |
-          ghidra_9.1.2_PUBLIC\support\analyzeHeadless . test_project `
-            -import ghidra_9.1.2_PUBLIC\Ghidra\Extensions\ghidra-xbe\tests\xbefiles\triangle.xbe `
-            -postScript ghidra_9.1.2_PUBLIC\Ghidra\Extensions\ghidra-xbe\tests\test_load.py
+          ghidra_9.2_PUBLIC\support\analyzeHeadless . test_project `
+            -import ghidra_9.2_PUBLIC\Ghidra\Extensions\ghidra-xbe\tests\xbefiles\triangle.xbe `
+            -postScript ghidra_9.2_PUBLIC\Ghidra\Extensions\ghidra-xbe\tests\test_load.py
 
   Test-macOS:
     runs-on: macos-latest
@@ -74,18 +74,18 @@ jobs:
 
       - name: Install Ghidra
         run: |
-          wget --quiet -O ghidra.zip "https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip"
+          wget --quiet -O ghidra.zip "https://ghidra-sre.org/ghidra_9.2_PUBLIC_20201113.zip"
           unzip ghidra.zip
 
       - name: Install Extension
         run: |
-          unzip dist/*ghidra-xbe.zip -d ghidra_9.1.2_PUBLIC/Ghidra/Extensions
+          unzip dist/*ghidra-xbe.zip -d ghidra_9.2_PUBLIC/Ghidra/Extensions
 
       - name: Run Tests
         run: |
-          ghidra_9.1.2_PUBLIC/support/analyzeHeadless . test_project \
-            -import ghidra_9.1.2_PUBLIC/Ghidra/Extensions/ghidra-xbe/tests/xbefiles/triangle.xbe \
-            -postScript ghidra_9.1.2_PUBLIC/Ghidra/Extensions/ghidra-xbe/tests/test_load.py
+          ghidra_9.2_PUBLIC/support/analyzeHeadless . test_project \
+            -import ghidra_9.2_PUBLIC/Ghidra/Extensions/ghidra-xbe/tests/xbefiles/triangle.xbe \
+            -postScript ghidra_9.2_PUBLIC/Ghidra/Extensions/ghidra-xbe/tests/test_load.py
 
   Create-Release:
     runs-on: ubuntu-latest
