@@ -6,7 +6,7 @@ cat <<EOF > urls.txt
 https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz
 https://services.gradle.org/distributions/gradle-5.0-bin.zip
 https://ghidra-sre.org/ghidra_9.2_PUBLIC_20201113.zip
-https://github.com/mborgerson/XbSymbolDatabase/releases/download/cli-tool-0.1/XbSymbolDatabaseTool.zip
+https://github.com/Cxbx-Reloaded/XbSymbolDatabase/releases/latest/download/XbSymbolDatabase.zip
 EOF
 cat urls.txt | xargs -n 1 -P 10 wget --no-verbose
 
@@ -25,17 +25,17 @@ unzip -q ghidra_9.2_PUBLIC_20201113.zip
 export GHIDRA_INSTALL_DIR=$PWD/ghidra_9.2_PUBLIC
 
 echo "[*] Extracting XbSymbolDatabase..."
-unzip -q XbSymbolDatabaseTool.zip
-export XBSYMBOLDATABASE=$PWD/XbSymbolDatabaseTool
+unzip -q -d XbSymbolDatabase XbSymbolDatabase.zip
+export XBSYMBOLDATABASE=$PWD/XbSymbolDatabase
 
 popd # Back to source root
 
 # Copy XbSymbolDatabase into this source tree for redist
-cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.linux64.Release   os/linux64/XbSymbolDatabaseTool
+cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI      os/linux64/XbSymbolDatabaseTool
 cp $XBSYMBOLDATABASE/LICENSE                                os/linux64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.macos64.Release   os/osx64/XbSymbolDatabaseTool
+cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI      os/osx64/XbSymbolDatabaseTool
 cp $XBSYMBOLDATABASE/LICENSE                                os/osx64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/XbSymbolDatabaseTool.win64.Release.exe os/win64/XbSymbolDatabaseTool.exe
+cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe    os/win64/XbSymbolDatabaseTool.exe
 cp $XBSYMBOLDATABASE/LICENSE                                os/win64/XbSymbolDatabaseTool.LICENSE
 
 echo "[*] Building..."
