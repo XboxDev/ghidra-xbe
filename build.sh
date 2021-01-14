@@ -5,7 +5,7 @@ echo "[*] Downloading files..."
 cat <<EOF > urls.txt
 https://corretto.aws/downloads/latest/amazon-corretto-11-x64-linux-jdk.tar.gz
 https://services.gradle.org/distributions/gradle-5.0-bin.zip
-https://ghidra-sre.org/ghidra_9.2_PUBLIC_20201113.zip
+https://ghidra-sre.org/ghidra_9.2.1_PUBLIC_20201215.zip
 https://github.com/Cxbx-Reloaded/XbSymbolDatabase/releases/latest/download/XbSymbolDatabase.zip
 EOF
 cat urls.txt | xargs -n 1 -P 10 wget --no-verbose
@@ -21,8 +21,8 @@ unzip -q gradle-5.0-bin.zip
 export PATH=$PWD/gradle-5.0/bin:$PATH
 
 echo "[*] Extracting Ghidra..."
-unzip -q ghidra_9.2_PUBLIC_20201113.zip
-export GHIDRA_INSTALL_DIR=$PWD/ghidra_9.2_PUBLIC
+unzip -q ghidra_9.2.1_PUBLIC_20201215.zip
+export GHIDRA_INSTALL_DIR=$PWD/ghidra_9.2.1_PUBLIC
 
 echo "[*] Extracting XbSymbolDatabase..."
 unzip -q -d XbSymbolDatabase XbSymbolDatabase.zip
