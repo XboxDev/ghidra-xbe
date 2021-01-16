@@ -554,6 +554,10 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		SymbolTable symbolTable = program.getSymbolTable();
 
 		Address address = kernelThunkTableAddr;
+		if (address.getOffset() == 0) {
+			// No kernel thunk table, skip processing step
+			return;
+		}
 
 		while (true) {
 			if (monitor.isCancelled()) {
