@@ -21,7 +21,7 @@ declare -a URLS=(
 pushd /tmp
 
 echo "[*] Downloading files..."
-echo ${URLS[@]} | xargs -n 1 -P ${#URLS[@]} wget -nv
+echo ${URLS[@]} | xargs -n 1 -P ${#URLS[@]} wget -N -nv
 
 echo "[*] Extracting JDK..."
 tar --strip-components=1 --one-top-level=jdk -xf ${CORRETTO_ARCHIVE}
