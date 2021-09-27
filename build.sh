@@ -51,6 +51,10 @@ cp $XBSYMBOLDATABASE/LICENSE					os/osx64/XbSymbolDatabaseTool.LICENSE
 cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe	os/win64/XbSymbolDatabaseTool.exe
 cp $XBSYMBOLDATABASE/LICENSE					os/win64/XbSymbolDatabaseTool.LICENSE
 
+# Add execute permissions to Linux and macOS XbSymbolDatabase binaries
+chmod +x os/linux64/XbSymbolDatabaseTool
+chmod +x os/osx64/XbSymbolDatabaseTool
+
 echo "[*] Building..."
 gradle -b build.gradle
 
