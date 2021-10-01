@@ -524,10 +524,8 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 	{
 		try {
 			// Read in section data and blank difference
-			byte[] data = input.readByteArray(off, (int)vlen);
-			for (int i = (int)len; i < (int)vlen; i++) {
-				data[i] = 0;
-			}
+			byte[] data = input.readByteArray(off, (int)len);
+			data = Arrays.copyOf(data, (int)vlen);
 
 			// Create the memory block
 			MemoryBlock sec = api.createMemoryBlock(name, api.toAddr(vaddr), data, false);
