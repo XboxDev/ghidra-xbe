@@ -492,7 +492,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		reader.setPointerIndex(0);
 		createSection(api, "headers", reader,
 				header.baseAddr, header.imageHeaderSize,
-				0, header.imageHeaderSize, false);
+				0, header.imageHeaderSize, false, false);
 
 		// Read sections headers
 		reader.setPointerIndex(header.sectionHeadersAddr - header.baseAddr);
@@ -506,7 +506,8 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 			// Read section data
 			createSection(api, name, reader,
 					secHdr.virtualAddr, secHdr.virtualSize,
-					secHdr.rawAddr, secHdr.rawSize, (secHdr.flags & secHdr.FLAG_EXECUTABLE) != 0);
+					secHdr.rawAddr, secHdr.rawSize, (secHdr.flags & secHdr.FLAG_WRITABLE) != 0,
+					(secHdr.flags & secHdr.FLAG_EXECUTABLE) != 0);
 		}
 
 		// Process imports
@@ -520,7 +521,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		processImports(program, monitor, log);
 	}
 
-	private void createSection(FlatProgramAPI api, String name, BinaryReader input, long vaddr, long vlen, long off, long len, boolean exec)
+	private void createSection(FlatProgramAPI api, String name, BinaryReader input, long vaddr, long vlen, long off, long len, boolean write, boolean exec)
 	{
 		try {
 			// Read in section data and blank difference
@@ -533,7 +534,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 			MemoryBlock sec = api.createMemoryBlock(name, api.toAddr(vaddr), data, false);
 			sec.setExecute(exec);
 			sec.setRead(true);
-			sec.setWrite(true);
+			sec.setWrite(write);
 		} catch (Exception e) {
 			Msg.error(this, e.getMessage());
 		}
