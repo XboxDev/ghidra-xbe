@@ -508,6 +508,9 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 					secHdr.virtualAddr, secHdr.virtualSize,
 					secHdr.rawAddr, secHdr.rawSize, (secHdr.flags & secHdr.FLAG_WRITABLE) != 0,
 					(secHdr.flags & secHdr.FLAG_EXECUTABLE) != 0);
+
+			DataType secHdrDT = secHdr.toDataType();
+			createStruct(api, log, secHdrDT, header.sectionHeadersAddr + i * secHdrDT.getLength());
 		}
 
 		// Process imports
@@ -519,6 +522,39 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 			kernelThunkTableAddr = api.toAddr(header.kernThunkAddr ^ KTHUNK_RETAIL);
 		}
 		processImports(program, monitor, log);
+
+		createStruct(api, log, header.toDataType(), header.baseAddr);
+		createStruct(api, log, header.certificateHeader.toDataType(), header.certificateAddr);
+		if (header.tlsAddr != 0) {
+			createStruct(api, log, new XbeTlsHeader().toDataType(), header.tlsAddr);
+		}
+		if (header.kernLibVersionAddr != 0) {
+			createStruct(api, log, new XbeLibraryHeader().toDataType(), header.kernLibVersionAddr);
+		}
+		if (header.xapiLibVersionAddr != 0) {
+			createStruct(api, log, new XbeLibraryHeader().toDataType(), header.xapiLibVersionAddr);
+		}
+		if (header.libVersionsAddr != 0) {
+			for (int i = 0; i < header.libVersionsCount; i++) {
+				DataType libDT = new XbeLibraryHeader().toDataType();
+				createStruct(api, log, libDT, header.libVersionsAddr + i * libDT.getLength());
+			}
+		}
+		if (header.libFeaturesAddr != 0) {
+			for (int i = 0; i < header.libFeaturesCount; i++) {
+				DataType libDT = new XbeLibraryHeader().toDataType();
+				createStruct(api, log, libDT, header.libFeaturesAddr + i * libDT.getLength());
+			}
+		}
+	}
+
+	void createStruct(FlatProgramAPI api, MessageLog log, DataType dataType, long address) {
+		try {
+			api.createData(api.toAddr(address), dataType);
+		}
+		catch (Exception e) {
+			log.appendMsg("Data type not created: " + e.getMessage());
+		}
 	}
 
 	private void createSection(FlatProgramAPI api, String name, BinaryReader input, long vaddr, long vlen, long off, long len, boolean write, boolean exec)
