@@ -1,4 +1,4 @@
-package skeleton;
+package xbeloader;
 
 import java.io.IOException;
 import java.util.*;
