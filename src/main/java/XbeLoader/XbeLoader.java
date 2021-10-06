@@ -491,8 +491,8 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		// Read headers into memory
 		reader.setPointerIndex(0);
 		createSection(api, "headers", reader,
-				header.baseAddr, header.imageHeaderSize,
-				0, header.imageHeaderSize, false, false);
+				header.baseAddr, header.headersSize,
+				0, header.headersSize, false, false);
 
 		// Read sections headers
 		reader.setPointerIndex(header.sectionHeadersAddr - header.baseAddr);
