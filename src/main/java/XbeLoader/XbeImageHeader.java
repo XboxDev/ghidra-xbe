@@ -59,8 +59,67 @@ public class XbeImageHeader implements StructConverter {
 	public long   libFeaturesAddr;
 	public long   libFeaturesCount;
 	public long   debugInfo;
+	// Not part of structure, extended feature check
+	public XbeType type;
 
 	XbeCertificateHeader certificateHeader;
+
+	public enum XbeType {
+		RETAIL(0),
+		DEBUG(1),
+		CHIHIRO(2);
+
+		private int value;
+
+		private XbeType(int setValue) {
+			value = setValue;
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
+
+	private long[] xorEntryPoint = {
+		0xA8FC57ABL, // Retail
+		0x94859D4BL, // Debug
+		0x40B5C16EL  // Chihiro
+	};
+
+	private long[] xorKernelThunk = {
+		0x5B6D40B6L, // Retail
+		0xEFB1F152L, // Debug
+		0x2290059DL  // Chihiro
+	};
+
+	// ported from Dxbx's XbeExplorer
+	private XbeType GetXbeType() {
+
+		// Detect if the XBE is for Chihiro :
+		// This is based on https://github.com/radare/radare2/blob/7ffe2599a192bf5b9333560345f80dd97f096277/libr/bin/p/bin_xbe.c#L29
+		if ((entryAddr & 0xF0000000) == 0x40000000) {
+			return XbeType.CHIHIRO;
+		}
+
+		// Check for Debug XBE, using high bit of the kernel thunk address :
+		// (DO NOT test like https://github.com/radare/radare2/blob/7ffe2599a192bf5b9333560345f80dd97f096277/libr/bin/p/bin_xbe.c#L33 !)
+		if ((kernThunkAddr & 0x80000000) > 0) {
+			return XbeType.DEBUG;
+		}
+
+		// Otherwise, the XBE is a Retail build :
+		return XbeType.RETAIL;
+	}
+
+	// Unscramble entry point
+	public long GetEntryPoint() {
+		return entryAddr ^ xorEntryPoint[type.getValue()];
+	}
+
+	// Unscramble kernel thunk
+	public long GetKernelThunk() {
+		return kernThunkAddr ^ xorKernelThunk[type.getValue()];
+	}
 
 	public XbeImageHeader(BinaryReader reader) throws IOException {
 		reader.setPointerIndex(0);
@@ -99,8 +158,11 @@ public class XbeImageHeader implements StructConverter {
 			libFeaturesAddr      = reader.readNextUnsignedInt();
 			libFeaturesCount     = reader.readNextUnsignedInt();
 		}
-		if (imageHeaderSize >= 0x184)
+		if (imageHeaderSize >= 0x184) {
 			debugInfo            = reader.readNextUnsignedInt();
+		}
+
+		type                     = GetXbeType();
 
 		reader.setPointerIndex(certificateAddr);
 		certificateHeader = new XbeCertificateHeader(reader);

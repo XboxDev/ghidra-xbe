@@ -39,7 +39,6 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 	public static String XBE_NAME = "Xbox Executable Format (XBE)";
 	public XbeImageHeader header;
 	List<XbeSectionHeader> sectionHeaders;
-	boolean isDebug;
 	private Program program;
 	private Address kernelThunkTableAddr;
 	private static String[] kernelExports = {
@@ -467,19 +466,8 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 			Msg.error(this, e.getMessage());
 		}
 
-		// Unscramble entry point
-		long ENTRY_DEBUG  = 0x94859D4BL;
-		long ENTRY_RETAIL = 0xA8FC57ABL;
-		long entry = header.entryAddr ^ ENTRY_DEBUG;
-		if (entry < 0x4000000) {
-			isDebug = true;
-		} else {
-			entry = header.entryAddr ^ ENTRY_RETAIL;
-			isDebug = false;
-		}
-
 		// Add entry point
-		Address entryAddr = api.toAddr(entry);
+		Address entryAddr = api.toAddr(header.GetEntryPoint());
 		try {
 			program.getSymbolTable().createLabel(entryAddr, "entry", SourceType.IMPORTED);
 			program.getSymbolTable().addExternalEntryPoint(entryAddr);
@@ -514,13 +502,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		}
 
 		// Process imports
-		long KTHUNK_DEBUG  = 0xEFB1F152L;
-		long KTHUNK_RETAIL = 0x5B6D40B6L;
-		if (isDebug) {
-			kernelThunkTableAddr = api.toAddr(header.kernThunkAddr ^ KTHUNK_DEBUG);
-		} else {
-			kernelThunkTableAddr = api.toAddr(header.kernThunkAddr ^ KTHUNK_RETAIL);
-		}
+		kernelThunkTableAddr = api.toAddr(header.GetKernelThunk());
 		processImports(program, monitor, log);
 
 		createStruct(api, log, header.toDataType(), header.baseAddr);
