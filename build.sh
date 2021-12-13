@@ -2,9 +2,9 @@
 
 export CORRETTO_ARCHIVE=amazon-corretto-15-x64-linux-jdk.tar.gz
 export CORRETTO_URL=https://corretto.aws/downloads/latest/${CORRETTO_ARCHIVE}
-export GHIDRA_VER_CORE=10.0.4
+export GHIDRA_VER_CORE=10.1
 export GHIDRA_VER=${GHIDRA_VER_CORE}_PUBLIC
-export GHIDRA_DATE=20210928
+export GHIDRA_DATE=20211210
 export GHIDRA_ARCHIVE=ghidra_${GHIDRA_VER}_${GHIDRA_DATE}.zip
 export GHIDRA_URL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VER_CORE}_build/${GHIDRA_ARCHIVE}
 export GRADLE_VER=6.8.2
@@ -44,15 +44,15 @@ export XBSYMBOLDATABASE=$PWD/XbSymbolDatabase
 popd # Back to source root
 
 # Copy XbSymbolDatabase into this source tree for redist
-cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI	os/linux64/XbSymbolDatabaseTool
-cp $XBSYMBOLDATABASE/LICENSE					os/linux64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI	os/linux_x86_64/XbSymbolDatabaseTool
+cp $XBSYMBOLDATABASE/LICENSE					os/linux_x86_64/XbSymbolDatabaseTool.LICENSE
 cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI	os/osx64/XbSymbolDatabaseTool
 cp $XBSYMBOLDATABASE/LICENSE					os/osx64/XbSymbolDatabaseTool.LICENSE
 cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe	os/win64/XbSymbolDatabaseTool.exe
 cp $XBSYMBOLDATABASE/LICENSE					os/win64/XbSymbolDatabaseTool.LICENSE
 
 # Add execute permissions to Linux and macOS XbSymbolDatabase binaries
-chmod +x os/linux64/XbSymbolDatabaseTool
+chmod +x os/linux_x86_64/XbSymbolDatabaseTool
 chmod +x os/osx64/XbSymbolDatabaseTool
 
 echo "[*] Building..."
