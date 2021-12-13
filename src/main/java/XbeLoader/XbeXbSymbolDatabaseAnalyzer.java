@@ -88,7 +88,7 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 		try {
 			toolPath = Application.getOSFile(toolExec).getAbsolutePath();
 		} catch (FileNotFoundException e) {
-			log.appendMsg("Failed to find " + toolExec);
+			log.appendMsg("Failed to find " + toolExec + ": " + e.getMessage());
 			return false;
 		}
 		String xbePath = program.getExecutablePath();
