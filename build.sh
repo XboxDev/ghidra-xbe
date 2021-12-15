@@ -46,14 +46,14 @@ popd # Back to source root
 # Copy XbSymbolDatabase into this source tree for redist
 cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI	os/linux_x86_64/XbSymbolDatabaseTool
 cp $XBSYMBOLDATABASE/LICENSE					os/linux_x86_64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI	os/osx64/XbSymbolDatabaseTool
-cp $XBSYMBOLDATABASE/LICENSE					os/osx64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe	os/win64/XbSymbolDatabaseTool.exe
-cp $XBSYMBOLDATABASE/LICENSE					os/win64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI	os/mac_x86_64/XbSymbolDatabaseTool
+cp $XBSYMBOLDATABASE/LICENSE					os/mac_x86_64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe	os/win_x86_64/XbSymbolDatabaseTool.exe
+cp $XBSYMBOLDATABASE/LICENSE					os/win_x86_64/XbSymbolDatabaseTool.LICENSE
 
 # Add execute permissions to Linux and macOS XbSymbolDatabase binaries
 chmod +x os/linux_x86_64/XbSymbolDatabaseTool
-chmod +x os/osx64/XbSymbolDatabaseTool
+chmod +x os/mac_x86_64/XbSymbolDatabaseTool
 
 echo "[*] Building..."
 gradle -b build.gradle
