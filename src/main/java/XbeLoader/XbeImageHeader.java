@@ -102,7 +102,7 @@ public class XbeImageHeader implements StructConverter {
 		if (imageHeaderSize >= 0x184)
 			debugInfo            = reader.readNextUnsignedInt();
 
-		reader.setPointerIndex(certificateAddr);
+		reader.setPointerIndex(certificateAddr - baseAddr);
 		certificateHeader = new XbeCertificateHeader(reader);
 	}
 
