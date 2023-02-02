@@ -10,8 +10,9 @@ export GHIDRA_URL=https://github.com/NationalSecurityAgency/ghidra/releases/down
 export GRADLE_VER=7.6
 export GRADLE_ARCHIVE=gradle-${GRADLE_VER}-bin.zip
 export GRADLE_URL=https://services.gradle.org/distributions/${GRADLE_ARCHIVE}
+export XBSYMBOLDATABASE_VER=v3.1.143
 export XBSYMBOLDATABASE_ARCHIVE=XbSymbolDatabase.zip
-export XBSYMBOLDATABASE_URL=https://github.com/Cxbx-Reloaded/XbSymbolDatabase/releases/latest/download/${XBSYMBOLDATABASE_ARCHIVE}
+export XBSYMBOLDATABASE_URL=https://github.com/Cxbx-Reloaded/XbSymbolDatabase/releases/download/${XBSYMBOLDATABASE_VER}/${XBSYMBOLDATABASE_ARCHIVE}
 declare -a URLS=(
 	$CORRETTO_URL
 	$GHIDRA_URL
