@@ -25,6 +25,10 @@ jobs:
     steps:
       - name: Clone Tree
         uses: actions/checkout@v2
+      - name: Install xsltproc
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install xsltproc
       - name: Build
         id: build
         run: ./build.sh

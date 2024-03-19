@@ -546,6 +546,20 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 				createStruct(api, log, libDT, header.libFeaturesAddr + i * libDT.getLength());
 			}
 		}
+
+		// Set .XTLID data types
+		MemoryBlock xtlidSection = program.getMemory().getBlock(".XTLID");
+		if (xtlidSection != null) {
+			Listing listing = program.getListing();
+			for (Address addr = xtlidSection.getStart(); addr.compareTo(xtlidSection.getEnd()) <= 0; addr = addr.add(8)) {
+				try {
+					listing.createData(addr, new DWordDataType(), 4);
+					listing.createData(addr.add(4), new PointerDataType(), 4);
+				} catch (CodeUnitInsertionException e) {
+					log.appendMsg("Could not set data type in .XTLID section: " + e.getMessage());
+				}
+			}
+		}
 	}
 
 	void createStruct(FlatProgramAPI api, MessageLog log, DataType dataType, long address) {
