@@ -13,11 +13,14 @@ export GRADLE_URL=https://services.gradle.org/distributions/${GRADLE_ARCHIVE}
 export XBSYMBOLDATABASE_VER=v3.1.156
 export XBSYMBOLDATABASE_ARCHIVE=XbSymbolDatabase.zip
 export XBSYMBOLDATABASE_URL=https://github.com/Cxbx-Reloaded/XbSymbolDatabase/releases/download/${XBSYMBOLDATABASE_VER}/${XBSYMBOLDATABASE_ARCHIVE}
+export XTLID_VER=v0.1.2
+export XTLID_URL=https://github.com/XboxDev/xtlid/releases/download/${XTLID_VER}/xtlid.xml
 declare -a URLS=(
 	$CORRETTO_URL
 	$GHIDRA_URL
 	$GRADLE_URL
 	$XBSYMBOLDATABASE_URL
+	$XTLID_URL
 )
 
 pushd /tmp
@@ -57,6 +60,7 @@ chmod +x os/linux_x86_64/XbSymbolDatabaseTool
 chmod +x os/mac_x86_64/XbSymbolDatabaseTool
 
 echo "[*] Building..."
+xsltproc -o src/main/java/XbeLoader/XbeXtlidDb.java xtlid2java.xslt /tmp/xtlid.xml
 gradle -b build.gradle
 
 if [[ "$RUNTESTS" == "1" || "$CI" == "true" ]]; then

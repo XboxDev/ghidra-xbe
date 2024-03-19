@@ -5,3 +5,4 @@ dist/
 .classpath
 .project
 XbSymbolDatabaseTool*
+src/main/java/XbeLoader/XbeXtlidDb.java
