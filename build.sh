@@ -41,6 +41,18 @@ echo "[*] Extracting Ghidra..."
 unzip -q ${GHIDRA_ARCHIVE}
 export GHIDRA_INSTALL_DIR=$PWD/ghidra_${GHIDRA_VER}
 
+echo "[*] Installing Dependency (Will be prompted)..."
+if [ -d "/etc/debian_version" ]; then # If we are debian-bassed
+  sudo apt-get install xsltproc
+fi
+
+if [[ $(grep -w ID /etc/os-release) == *"ID=arch"* || *"ID=endeavouros"* ]]; then # Checking either if arch or EneavourOS, is arch-based.
+    sudo pacman -S libxslt
+fi
+
+echo "[*] One will be unable to locate the package, one will install, this is normal and to ensure both arch/debian-based has this dependency package."
+
+
 echo "[*] Extracting XbSymbolDatabase..."
 unzip -qd XbSymbolDatabase ${XBSYMBOLDATABASE_ARCHIVE}
 export XBSYMBOLDATABASE=$PWD/XbSymbolDatabase
