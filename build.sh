@@ -46,8 +46,8 @@ if [ -f "/etc/debian_version" ]; then
   sudo apt-get install xsltproc
 fi
 
-if [[ $(grep -w OD /etc/os-release) == *"ID=arch"* || *"ID=endeavouros"* ]]; then
-   sudo pacman -S libxslt
+if find /etc/os-release -type f -exec grep -q 'ID_LIKE=arch' {} \; -print; then
+    sudo pacman -S libxslt
 fi
 
 echo "[*] Extracting XbSymbolDatabase..."
