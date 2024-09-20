@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 
 export CORRETTO_ARCHIVE=amazon-corretto-17-x64-linux-jdk.tar.gz
 export CORRETTO_URL=https://corretto.aws/downloads/latest/${CORRETTO_ARCHIVE}
