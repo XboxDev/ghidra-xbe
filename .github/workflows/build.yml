@@ -24,7 +24,7 @@ jobs:
       BUILD_TAG: ${{ steps.build.outputs.BUILD_TAG }}
     steps:
       - name: Clone Tree
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install xsltproc
         run: |
           sudo apt-get -y update
@@ -33,7 +33,7 @@ jobs:
         id: build
         run: ./build.sh
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
@@ -46,7 +46,7 @@ jobs:
       POWERSHELL_TELEMETRY_OPTOUT: 1
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ needs.Build-Ubuntu.outputs.JAVA_VER }}
@@ -67,7 +67,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ needs.Build-Ubuntu.outputs.JAVA_VER }}
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       - name: Get Package Info
         id: pkg_info
         working-directory: dist
