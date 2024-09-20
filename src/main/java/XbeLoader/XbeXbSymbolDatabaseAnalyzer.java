@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import generic.jar.ResourceFile;
 import ghidra.GhidraApplicationLayout;
 import ghidra.app.services.AbstractAnalyzer;
+import ghidra.app.services.AnalysisPriority;
 import ghidra.app.services.AnalyzerType;
 import ghidra.app.util.importer.MessageLog;
 import ghidra.framework.Application;
@@ -54,6 +55,7 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 
 	public XbeXbSymbolDatabaseAnalyzer() {
 		super("Xbox Symbol Database Analyzer", "Scan XBE for known library functions", AnalyzerType.BYTE_ANALYZER);
+		setPriority(AnalysisPriority.DISASSEMBLY.before());
 	}
 
 	@Override
