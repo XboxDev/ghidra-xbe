@@ -4,5 +4,5 @@ dist/
 /bin/
 .classpath
 .project
-XbSymbolDatabaseTool*
+XbSymbolDatabaseCLI*
 src/main/java/XbeLoader/XbeXtlidDb.java

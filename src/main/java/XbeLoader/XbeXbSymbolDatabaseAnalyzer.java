@@ -49,8 +49,8 @@ import ghidra.util.exception.*;
  */
 public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 	
-	private static final String xbsdb_tool_exec = "XbSymbolDatabaseTool";
-	private static final String xbsdb_tool_exec_wins = "XbSymbolDatabaseTool.exe";
+	private static final String xbsdb_tool_exec = "XbSymbolDatabaseCLI";
+	private static final String xbsdb_tool_exec_wins = "XbSymbolDatabaseCLI.exe";
 
 	public XbeXbSymbolDatabaseAnalyzer() {
 		super("Xbox Symbol Database Analyzer", "Scan XBE for known library functions", AnalyzerType.BYTE_ANALYZER);

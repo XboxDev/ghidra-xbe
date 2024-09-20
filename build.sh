@@ -49,16 +49,16 @@ export XBSYMBOLDATABASE=$PWD/XbSymbolDatabase
 popd # Back to source root
 
 # Copy XbSymbolDatabase into this source tree for redist
-cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI	os/linux_x86_64/XbSymbolDatabaseTool
-cp $XBSYMBOLDATABASE/LICENSE					os/linux_x86_64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI	os/mac_x86_64/XbSymbolDatabaseTool
-cp $XBSYMBOLDATABASE/LICENSE					os/mac_x86_64/XbSymbolDatabaseTool.LICENSE
-cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe	os/win_x86_64/XbSymbolDatabaseTool.exe
-cp $XBSYMBOLDATABASE/LICENSE					os/win_x86_64/XbSymbolDatabaseTool.LICENSE
+cp $XBSYMBOLDATABASE/linux_x64/bin/XbSymbolDatabaseCLI   os/linux_x86_64/XbSymbolDatabaseCLI
+cp $XBSYMBOLDATABASE/LICENSE                             os/linux_x86_64/XbSymbolDatabaseCLI.LICENSE
+cp $XBSYMBOLDATABASE/macos_x64/bin/XbSymbolDatabaseCLI   os/mac_x86_64/XbSymbolDatabaseCLI
+cp $XBSYMBOLDATABASE/LICENSE                             os/mac_x86_64/XbSymbolDatabaseCLI.LICENSE
+cp $XBSYMBOLDATABASE/win_x64/bin/XbSymbolDatabaseCLI.exe os/win_x86_64/XbSymbolDatabaseCLI.exe
+cp $XBSYMBOLDATABASE/LICENSE                             os/win_x86_64/XbSymbolDatabaseCLI.LICENSE
 
 # Add execute permissions to Linux and macOS XbSymbolDatabase binaries
-chmod +x os/linux_x86_64/XbSymbolDatabaseTool
-chmod +x os/mac_x86_64/XbSymbolDatabaseTool
+chmod +x os/linux_x86_64/XbSymbolDatabaseCLI
+chmod +x os/mac_x86_64/XbSymbolDatabaseCLI
 
 echo "[*] Building..."
 xsltproc -o src/main/java/XbeLoader/XbeXtlidDb.java xtlid2java.xslt /tmp/xtlid.xml
