@@ -122,14 +122,13 @@ public class XbeXbSymbolDatabaseAnalyzer extends AbstractAnalyzer {
 			}
 			
 			exec.waitFor();
-		} catch (InterruptedException e) {
-			log.appendMsg("Failed to run " + toolExec);
-			return false;
-		} catch (IOException e) {
-			log.appendMsg("Failed to run " + toolExec);
-			return false;
-		} catch (InvalidInputException e) {
-			log.appendMsg("Failed to run " + toolExec);
+		} catch (Throwable e) {
+			int st_i = 0;
+			for (StackTraceElement stackTrace : e.getStackTrace()) {
+				log.appendMsg("stack[" + st_i + "]     : " + stackTrace.toString());
+				st_i++;
+			}
+			log.appendMsg("message      : " + e.getMessage());
 			return false;
 		}
 
