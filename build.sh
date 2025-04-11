@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export CORRETTO_ARCHIVE=amazon-corretto-17-x64-linux-jdk.tar.gz
+export CORRETTO_ARCHIVE=amazon-corretto-21-x64-linux-jdk.tar.gz
 export CORRETTO_URL=https://corretto.aws/downloads/latest/${CORRETTO_ARCHIVE}
 export GHIDRA_VER_CORE=11.3.1
 export GHIDRA_VER=${GHIDRA_VER_CORE}_PUBLIC
