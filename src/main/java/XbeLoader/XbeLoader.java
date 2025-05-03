@@ -1,6 +1,7 @@
 package xbeloader;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import ghidra.app.util.Option;
@@ -23,14 +24,15 @@ import ghidra.program.model.reloc.RelocationTable;
 import ghidra.program.model.symbol.*;
 import ghidra.program.model.util.AddressSetPropertyMap;
 import ghidra.util.*;
+import ghidra.util.Msg;
 import ghidra.util.exception.*;
 import ghidra.util.task.TaskMonitor;
+import ghidra.util.MonitoredInputStream;
 import ghidra.program.flatapi.*;
-import ghidra.util.Msg;
+import ghidra.program.database.mem.*;
 import ghidra.program.database.function.OverlappingFunctionException;
 import ghidra.program.model.util.CodeUnitInsertionException;
 import ghidra.program.model.data.PointerDataType;
-
 
 /**
  * TODO: Provide class-level documentation that describes what this loader does.
@@ -39,8 +41,6 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 	public static String XBE_NAME = "Xbox Executable Format (XBE)";
 	public XbeImageHeader header;
 	List<XbeSectionHeader> sectionHeaders;
-	boolean isDebug;
-	private Program program;
 	private Address kernelThunkTableAddr;
 	private static String[] kernelExports = {
 		"",                                     // 0
@@ -456,7 +456,15 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 			throws CancelledException, IOException {
 		BinaryReader reader = new BinaryReader(provider, true);
 		FlatProgramAPI api = new FlatProgramAPI(program, monitor);
-		this.program = program;
+		
+		FileBytes fileBytes;
+		String x = "Xbox";
+		try (InputStream fileIn = reader.getInputStream();
+			MonitoredInputStream mis = new MonitoredInputStream(fileIn, monitor)) {
+			// Indicate that cleanup is not neccessary for cancelled import operation.
+			mis.setCleanupOnCancel(false);
+			fileBytes = program.getMemory().createFileBytes(x, 0, provider.length(), mis, monitor);
+		}
 
 		// Read XBE header
 		header = new XbeImageHeader(reader);
@@ -499,7 +507,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 		try {
 			program.getSymbolTable().createLabel(entryAddr, "entry", SourceType.IMPORTED);
 			program.getSymbolTable().addExternalEntryPoint(entryAddr);
-			createOneByteFunction("entry", entryAddr);
+			createOneByteFunction("entry", entryAddr, program);
 		} catch (Exception e) {
 			Msg.error(this, e.getMessage());
 		}
@@ -665,7 +673,7 @@ public class XbeLoader extends AbstractLibrarySupportLoader {
 	 * @param name the name of the function
 	 * @param address location to create the function
 	 */
-	void createOneByteFunction(String name, Address address) {
+	void createOneByteFunction(String name, Address address, Program program) {
 		FunctionManager functionMgr = program.getFunctionManager();
 		if (functionMgr.getFunctionAt(address) != null) {
 			return;
