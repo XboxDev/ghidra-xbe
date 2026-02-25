@@ -3,9 +3,9 @@ set -e
 
 export CORRETTO_ARCHIVE=amazon-corretto-21-x64-linux-jdk.tar.gz
 export CORRETTO_URL=https://corretto.aws/downloads/latest/${CORRETTO_ARCHIVE}
-export GHIDRA_VER_CORE=12.0.1
+export GHIDRA_VER_CORE=12.0.3
 export GHIDRA_VER=${GHIDRA_VER_CORE}_PUBLIC
-export GHIDRA_DATE=20260114
+export GHIDRA_DATE=20260210
 export GHIDRA_ARCHIVE=ghidra_${GHIDRA_VER}_${GHIDRA_DATE}.zip
 export GHIDRA_URL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VER_CORE}_build/${GHIDRA_ARCHIVE}
 export GRADLE_VER=8.5
