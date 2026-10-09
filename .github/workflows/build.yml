@@ -49,6 +49,7 @@ jobs:
         uses: actions/download-artifact@v7
       - uses: actions/setup-java@v6
         with:
+          distribution: temurin
           java-version: ${{ needs.Build-Ubuntu.outputs.JAVA_VER }}
       - name: Install Ghidra
         run: |
@@ -72,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v7
       - uses: actions/setup-java@v6
         with:
+          distribution: temurin
           java-version: ${{ needs.Build-Ubuntu.outputs.JAVA_VER }}
       - name: Install Ghidra
         run: |
