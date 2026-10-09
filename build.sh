@@ -3,9 +3,9 @@ set -e
 
 export CORRETTO_ARCHIVE=amazon-corretto-21-x64-linux-jdk.tar.gz
 export CORRETTO_URL=https://corretto.aws/downloads/latest/${CORRETTO_ARCHIVE}
-export GHIDRA_VER_CORE=12.0.3
+export GHIDRA_VER_CORE=12.1.4
 export GHIDRA_VER=${GHIDRA_VER_CORE}_PUBLIC
-export GHIDRA_DATE=20260210
+export GHIDRA_DATE=20260921
 export GHIDRA_ARCHIVE=ghidra_${GHIDRA_VER}_${GHIDRA_DATE}.zip
 export GHIDRA_URL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VER_CORE}_build/${GHIDRA_ARCHIVE}
 export GRADLE_VER=8.5
@@ -18,11 +18,14 @@ export XTLID_VER=v0.1.2
 export XTLID_URL=https://github.com/XboxDev/xtlid/releases/download/${XTLID_VER}/xtlid.xml
 declare -a URLS=(
 	$CORRETTO_URL
-	$GHIDRA_URL
 	$GRADLE_URL
 	$XBSYMBOLDATABASE_URL
 	$XTLID_URL
 )
+
+if [[ -z "$GHIDRA_INSTALL_DIR" ]]; then
+	URLS+=($GHIDRA_URL)
+fi
 
 pushd /tmp
 
@@ -38,9 +41,11 @@ echo "[*] Extracting Gradle..."
 unzip -q ${GRADLE_ARCHIVE}
 export PATH=$PWD/gradle-${GRADLE_VER}/bin:$PATH
 
-echo "[*] Extracting Ghidra..."
-unzip -q ${GHIDRA_ARCHIVE}
-export GHIDRA_INSTALL_DIR=$PWD/ghidra_${GHIDRA_VER}
+if [[ -z "$GHIDRA_INSTALL_DIR" ]]; then
+	echo "[*] Extracting Ghidra..."
+	unzip -q ${GHIDRA_ARCHIVE}
+	export GHIDRA_INSTALL_DIR=$PWD/ghidra_${GHIDRA_VER}
+fi
 
 echo "[*] Extracting XbSymbolDatabase..."
 unzip -qd XbSymbolDatabase ${XBSYMBOLDATABASE_ARCHIVE}
@@ -69,11 +74,14 @@ if [[ "$RUNTESTS" == "1" || "$CI" == "true" ]]; then
 	cp dist/*ghidra-xbe.zip $GHIDRA_INSTALL_DIR/Ghidra/Extensions
 	pushd $GHIDRA_INSTALL_DIR/Ghidra/Extensions
 	unzip *ghidra-xbe.zip
+
+        cp $GHIDRA_INSTALL_DIR/Extensions/Ghidra/*Jython.zip .
+        unzip *Jython.zip
 	popd
 
 	echo "[*] Running tests..."
 	pushd tests
-	$GHIDRA_INSTALL_DIR/support/analyzeHeadless . test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
+	$GHIDRA_INSTALL_DIR/support/analyzeHeadless "${PWD}" test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
 	if [[ -e TEST_PASS ]]; then
 		echo "[+] Test PASSED"
 	else
