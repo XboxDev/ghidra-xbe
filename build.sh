@@ -74,11 +74,14 @@ if [[ "$RUNTESTS" == "1" || "$CI" == "true" ]]; then
 	cp dist/*ghidra-xbe.zip $GHIDRA_INSTALL_DIR/Ghidra/Extensions
 	pushd $GHIDRA_INSTALL_DIR/Ghidra/Extensions
 	unzip *ghidra-xbe.zip
+
+        cp $GHIDRA_INSTALL_DIR/Extensions/Ghidra/*Jython.zip .
+        unzip *Jython.zip
 	popd
 
 	echo "[*] Running tests..."
 	pushd tests
-	$GHIDRA_INSTALL_DIR/support/analyzeHeadless . test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
+	$GHIDRA_INSTALL_DIR/support/analyzeHeadless "${PWD}" test_project -import xbefiles/triangle.xbe -postScript ./test_load.py
 	if [[ -e TEST_PASS ]]; then
 		echo "[+] Test PASSED"
 	else

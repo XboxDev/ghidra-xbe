@@ -56,9 +56,11 @@ jobs:
           Expand-Archive -Path ${{ needs.Build-Ubuntu.outputs.GHIDRA_ARCHIVE }} -DestinationPath .
       - name: Install Extension
         run: Expand-Archive -Path dist\*ghidra-xbe.zip -DestinationPath ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions
+      - name: Install Jython
+        run: Expand-Archive -Path ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Extensions\Ghidra\*Jython.zip -DestinationPath ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions
       - name: Run Tests
         run: |
-          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\support\analyzeHeadless "${{ github.workspace }}"" test_project                             `
+          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\support\analyzeHeadless "${{ github.workspace }}" test_project                             `
             -import ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions\ghidra-xbe\tests\xbefiles\triangle.xbe `
             -postScript ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions\ghidra-xbe\tests\test_load.py
 
@@ -77,6 +79,8 @@ jobs:
           unzip ${{ needs.Build-Ubuntu.outputs.GHIDRA_ARCHIVE }}
       - name: Install Extension
         run: unzip dist/*ghidra-xbe.zip -d ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Ghidra/Extensions
+      - name: Install Jython extension
+        run: unzip ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Extensions/Ghidra/*Jython.zip -d ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Ghidra/Extensions
       - name: Run Tests
         run: |
           ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/support/analyzeHeadless "${PWD}" test_project                      \
