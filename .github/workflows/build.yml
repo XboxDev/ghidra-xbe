@@ -58,7 +58,7 @@ jobs:
         run: Expand-Archive -Path dist\*ghidra-xbe.zip -DestinationPath ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions
       - name: Run Tests
         run: |
-          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\support\analyzeHeadless . test_project                             `
+          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\support\analyzeHeadless "${{ github.workspace }}"" test_project                             `
             -import ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions\ghidra-xbe\tests\xbefiles\triangle.xbe `
             -postScript ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}\Ghidra\Extensions\ghidra-xbe\tests\test_load.py
 
@@ -79,7 +79,7 @@ jobs:
         run: unzip dist/*ghidra-xbe.zip -d ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Ghidra/Extensions
       - name: Run Tests
         run: |
-          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/support/analyzeHeadless . test_project                             \
+          ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/support/analyzeHeadless "${PWD}" test_project                      \
             -import ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Ghidra/Extensions/ghidra-xbe/tests/xbefiles/triangle.xbe \
             -postScript ghidra_${{ needs.Build-Ubuntu.outputs.GHIDRA_VER }}/Ghidra/Extensions/ghidra-xbe/tests/test_load.py
 
